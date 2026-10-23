@@ -16,7 +16,7 @@ return new class extends Migration
         // Relasi ke tabel orders
         $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
         // Relasi ke tabel products (asumsi kamu sudah punya tabel products)
-        $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+        $table->foreignId('product_id')->constrained('produk')->onDelete('cascade');
         $table->integer('quantity'); // Jumlah beli
         $table->decimal('price', 15, 2); // Harga satuan saat dibeli
         $table->decimal('subtotal', 15, 2); // Harga total per item (qty * price)
