@@ -6,7 +6,20 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KasirController; 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ImageManipulationController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
+use App\Models\User;
+
+Route::get('/preview-email', function () {
+    $dummyUser = new \App\Models\User();
+    $dummyUser->name = 'Wafi Arifin';
+    return new \App\Mail\WelcomeMail($dummyUser);
+
+    // Mengeksekusi pengiriman email
+    Mail::to($dummyUser->email)->send(new WelcomeMail($dummyUser));
+
+    return "Email berhasil diproses! Silakan cek file storage/logs/laravel.log";
+});
 
 Route::middleware(['auth'])->group(function () {
     // Khusus Admin
@@ -38,6 +51,3 @@ require __DIR__.'/auth.php';
 Route::resource('products', ProductController::class);
 Route::get('orders/{id}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
 Route::get('/produk', [ProductController::class, 'index']);
-
-Route::get('/upload-gambar', [ImageManipulationController::class, 'index']);
-Route::post('/upload-gambar', [ImageManipulationController::class, 'process'])->name('gambar.upload');
