@@ -10,10 +10,13 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 use App\Models\User;
 
+// Route pancingan untuk testing
+Route::get('/test-order', [OrderController::class, 'store']);
+
 Route::get('/preview-email', function () {
     $dummyUser = new \App\Models\User();
     $dummyUser->name = 'Wafi Arifin';
-    return new \App\Mail\WelcomeMail($dummyUser);
+    return new \App\Mail\WelcomeMail($dummyUser);   
 
     // Mengeksekusi pengiriman email
     Mail::to($dummyUser->email)->send(new WelcomeMail($dummyUser));

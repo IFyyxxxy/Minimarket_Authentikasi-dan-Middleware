@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 use App\Models\Order;
 use Barryvdh\DomPDF\Facade\Pdf;
-
 use Illuminate\Http\Request;
+use App\Events\OrderPlaced;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -43,4 +45,17 @@ class OrderController extends Controller
         // 5. DOWNLOAD FILE PDF
         return $pdf->download('invoice_pesanan_' . $invoice->id . '.pdf');
     }
+    public function store()
+{
+    // 1. Simulasi data order (karena butuh variabel $order yang punya id dan total)
+    $order = new \stdClass();
+    $order->id = rand(100, 999);
+    $order->total = 165000;
+
+    // 2. Trigger Event Broadcast
+    event(new OrderPlaced($order, Auth::user()));
+
+    // 3. Pesan sukses (Bisa diganti redirect ke halaman lain nantinya)
+    return "Pesanan berhasil diproses dan notifikasi real-time sedang dikirim!";
+}
 }
